@@ -42,6 +42,23 @@ class Settings(BaseSettings):
     webhook_signature_verification: bool = False
     access_token_expire_minutes: int = 30
 
+    # Redis settings
+    redis_url: str = "redis://localhost:6379/0"
+
+    # PSX settings
+    psx_dps_base_url: str = "https://dps.psx.com.pk"
+    psx_cache_ttl_live: int = 60        # seconds — during market hours
+    psx_cache_ttl_closed: int = 900     # seconds — after hours
+
+    # Celery settings
+    celery_broker_url: str = "redis://localhost:6379/1"   # separate DB from cache
+    celery_result_backend: str = "redis://localhost:6379/2"
+
+    # Alert engine settings
+    alert_cooldown_minutes: int = 60    # minimum gap between repeated non-one-shot alerts
+    alert_check_interval: int = 60      # seconds between alert checker runs
+    wa_send_delay_ms: int = 100         # delay between bulk WhatsApp sends (ms)
+
     class Config:
         env_file = ".env"
 

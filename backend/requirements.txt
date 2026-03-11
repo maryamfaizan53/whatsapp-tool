@@ -18,5 +18,10 @@ tiktoken==0.5.2
 langdetect==1.0.9
 whisper==1.1.10
 redis==5.0.1
-celery==5.3.4
+celery[redis]==5.3.4
 python-telegram-bot==20.7
+
+# PSX data
+yfinance==0.2.40
+beautifulsoup4==4.12.3
+lxml==5.2.2
