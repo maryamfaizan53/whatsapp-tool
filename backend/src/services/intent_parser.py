@@ -157,23 +157,35 @@ _NUM_PAT = re.compile(r"(?:rs\.?\s*)?(\d[\d,]*(?:\.\d+)?)", re.IGNORECASE)
 
 # Common non-ticker uppercase words to exclude from symbol extraction
 _STOP_WORDS = frozenset({
+    # English articles / prepositions / conjunctions
     "THE", "AND", "FOR", "FROM", "WITH", "WHEN", "THEN", "THIS", "THAT",
     "WILL", "HAVE", "HAS", "HAD", "ARE", "WAS", "WERE", "BEEN", "BEING",
+    "OF", "A", "AN", "TO", "BY", "AS", "IF", "IS",
+    # English action / UI words
     "ADD", "GET", "SET", "PUT", "BUY", "SELL", "TOP", "LAST", "NEXT",
-    "OPEN", "CLOSE", "HIGH", "LOW", "SEND", "SHOW", "LIST", "MY", "ME",
-    "KSE", "KMI", "PSX", "PSO", "STT", "NIT",  # indices / common abbrevs
+    "OPEN", "CLOSE", "HIGH", "LOW", "SEND", "SHOW", "LIST",
+    "MY", "ME", "US", "IT",
+    # Index names / system abbreviations (NOT PSX tickers)
+    "KSE", "KMI", "PSX", "STT", "NIT",
+    # Currency / units
     "RS", "PKR", "AT", "OR", "ON", "IN", "UP", "OK", "YES", "NO",
-    "DAY", "WEEK", "MONTH", "YEAR", "DAILY", "BRIEF", "HELP", "INFO",
-    "PRICE", "RATE", "ALERT", "WATCH", "REMOVE", "DELETE",
+    # Time words
+    "DAY", "WEEK", "MONTH", "YEAR", "DAILY", "BRIEF",
+    # Common intent keywords (should not be treated as tickers)
+    "HELP", "INFO", "PRICE", "RATE", "ALERT", "WATCH", "REMOVE", "DELETE",
+    # Roman Urdu particles frequently embedded in commands
+    "KA", "KI", "KE", "KY", "KYA", "HA", "HAI", "HO", "SE", "PE",
+    "KO", "HI", "BHI", "JO", "YEH", "WO", "AP", "AUR", "YA",
 })
 
 _PERIOD_MAP = {
-    r"1\s*day|today|aaj":          "1d",
-    r"5\s*days?|week|hafta":       "5d",
-    r"1\s*month?|ek\s*mahina":     "1mo",
-    r"3\s*months?|teen\s*mahine":  "3mo",
-    r"6\s*months?|chhe\s*mahine":  "6mo",
-    r"1\s*year|ek\s*saal|year":    "1y",
+    # Match both yfinance shorthand ("1d", "5d") and natural language
+    r"1\s*d(?:ay)?|today|aaj":                      "1d",
+    r"5\s*d(?:ays?)?|week|hafta":                   "5d",
+    r"1\s*mo(?:nth)?|ek\s*mahina":                  "1mo",
+    r"3\s*mo(?:nths?)?|teen\s*mahine":              "3mo",
+    r"6\s*mo(?:nths?)?|chhe\s*mahine":              "6mo",
+    r"1\s*y(?:ear)?|ek\s*saal|(?<!\d)year(?!\w)":  "1y",
 }
 
 
